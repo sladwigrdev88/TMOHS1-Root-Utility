@@ -190,7 +190,7 @@ def reboot(conn):
 def maskHotspot(conn):
     conn.resetIfDead()
     # send command to create /etc/init.d/ttl.ssh, add commands, give it correct permissions, and have it start automatically on boot
-    conn.send('echo "iptables -t mangle -I POSTROUTING -o rmnet_data0 -j TTL --ttl-set 64" > /etc/init.d/ttl.sh; echo "ip6tables -t mangle -I POSTROUTING -o rmnet_data0 -j HL --hl-set 64" >> /etc/init.d/ttl.sh; chmod 755 /etc/init.d/ttl.sh; ln -s /etc/init.d/ttl.sh /etc/rc5.d/S98ttl')
+    conn.send('echo "iptables -t mangle -I POSTROUTING -o rmnet_data+ -j TTL --ttl-set 64" > /etc/init.d/ttl.sh; echo "ip6tables -t mangle -I POSTROUTING -o rmnet_data+ -m hl ! --hl-eq 255 -j HL --hl-set 64" >> /etc/init.d/ttl.sh; chmod 755 /etc/init.d/ttl.sh; ln -s /etc/init.d/ttl.sh /etc/rc5.d/S98ttl')
     conn.read_very_eager()
     print('Added TTL rules to mask hotspot data as normal "on-device" data. Will take effect on reboot.')
 
